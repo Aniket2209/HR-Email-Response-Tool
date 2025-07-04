@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>HR-Email_Response_Tool</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <form action="/send-email" method="POST" id="emailForm">
+    <h2>Candidate Response Form</h2>
+
+    <label>Name: <input type="text" name="name" required></label>
+    <label>Email: <input type="email" name="email" required></label>
+    <label>Position: <input type="text" name="position" required></label>
+
+    <fieldset>
+      <legend>Status</legend>
+      <label><input type="radio" name="status" value="selected"> Selected</label>
+      <label><input type="radio" name="status" value="rejected"> Rejected</label>
+    </fieldset>
+
+    <button type="submit">Send Email</button>
+    <div id="message"></div>
+  </form>
+
+  <script>
+    const form = document.getElementById('emailForm');
+    const messageDiv = document.getElementById('message');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = new URLSearchParams(formData);
+      const res = await fetch('/send-email', {
+        method: 'POST',
+        body: data
+      });
+      messageDiv.textContent = await res.text();
+    });
+  </script>
+</body>
+</html>
